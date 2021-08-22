@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Myrottenpotatoes</title>
+    <title>Rottenpotatoes!</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,6 +11,19 @@
   </head>
 
   <body>
+    <h4>
+    <%= link_to 'Rottenpotatoes', movies_path %>
+    </h4>
     <%= yield %>
+    <% # this goes just inside %body: %>
+    <% if flash[:notice] %>
+      <div class="message" id="notice">
+          <%= flash[:notice] %>
+      </div>
+    <% elsif flash[:warning] %>
+      <div class="message" id="warning">
+          <%= flash[:warning] %>
+      </div>
+    <% end %>
   </body>
 </html>

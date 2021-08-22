@@ -59,5 +59,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'haml'
 # use Ruby debugger
 group :development, :test do
-  gem 'debugger'
+  gem 'pry-byebug'
 end

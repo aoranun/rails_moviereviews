@@ -1,0 +1,20 @@
+<% # in app/views/movies/show.html.haml %>
+<h2>Details about <%= @movie.title %></h2>
+<ul id="details">
+  <li>
+    Rating:
+    <%= @movie.rating %>
+  </li>
+  <li>
+    Released on:
+    <%= @movie.release_date.strftime("%B %d, %Y") %>
+  </li>
+</ul>
+<h3>Description:</h3>
+<p id="description">
+  <%= @movie.description %>
+</p>
+<%= link_to 'Edit info', edit_movie_path(@movie) %>
+<% # This Delete link will not really be a link, but a form: %>
+<%= link_to 'Delete', movie_path(@movie), :method => :delete %>
+<%= link_to 'Back to movie list', movies_path %>

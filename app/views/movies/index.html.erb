@@ -1,0 +1,35 @@
+<h1>All Movies</h1>
+<table id="movies">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Movie Title</th>
+      <th>Rating</th>
+      <th>Release Date</th>
+      <th>More Info</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @movies.each.with_index(1) do |movie, index| %>
+      <tr>
+        <td>
+          <%= index  %>
+        </td>
+        <td>
+          <%= movie.title  %>
+        </td>
+        <td>
+          <%= movie.rating %>
+        </td>
+        <td>
+          <%= movie.release_date.strftime("%d/%m/%Y") %>
+        </td>
+        <td>
+          <%= link_to "More about #{movie.title}", movie_path(movie) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% #add to end of index.html.haml %>
+<%= link_to 'Add new movie', new_movie_path %>
