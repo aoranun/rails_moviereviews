@@ -1,0 +1,21 @@
+<% # in app/views/movies/show_tmdb.html.haml %>
+<h2>Details about <%= if @movie["title"]; @movie["title"] else @movie["name"] end %></h2>
+<ul id="details">
+  <li>
+    Vote Average:
+    <%= @movie["vote_average"] %>
+  </li>
+  <li>
+    Released on:
+    <%= if @movie["release_date"]; @movie["release_date"].to_datetime.strftime("%d/%m/%Y") else @movie["first_air_date"].to_datetime.strftime("%d/%m/%Y") end %>
+  </li>
+</ul>
+<h3>Description:</h3>
+<p id="description">
+  <%= @movie["overview"] %>
+</p>
+<%= if @movie["title"]; tmdb_title= @movie["title"] else tmdb_title= @movie["name"] end%>
+<%= if @movie["release_date"]; tmdb_date = @movie["release_date"].to_datetime.strftime("%d/%m/%Y") else tmdb_date =  @movie["first_air_date"].to_datetime.strftime("%d/%m/%Y") end %>
+<%= tmdb_deccript = @movie["overview"] %>
+<%= link_to 'Save', new_tmdb_path(movie: {title: tmdb_title, rating: 'G', release_date: tmdb_date, description: tmdb_deccript}), {method: :post} %>
+<%= link_to 'Back to movie list', movies_path %>

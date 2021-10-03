@@ -1,0 +1,22 @@
+<h1>TMDb Movies</h1>
+<table id="movies">
+  <thead>
+    <tr>
+      <th>No.</th>
+      <th>Movie Title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @movie_data["results"].each.with_index(1) do |movie, index| %>
+      <tr>
+        <td>
+          <%= index  %>
+        </td>
+        <td>
+          <%= link_to "#{movie["name"]}", movie_show_path(movie["id"]) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to "Back to movie list", movies_path %>
