@@ -14,8 +14,6 @@
     <h4>
     <%= link_to 'Rottenpotatoes', movies_path %>
     </h4>
-    <%= yield %>
-    <% # this goes just inside %body: %>
     <% if flash[:notice] %>
       <div class="message" id="notice">
           <%= flash[:notice] %>
@@ -25,5 +23,7 @@
           <%= flash[:warning] %>
       </div>
     <% end %>
+    <%= yield %>
+    <% # this goes just inside %body: %>
   </body>
 </html>

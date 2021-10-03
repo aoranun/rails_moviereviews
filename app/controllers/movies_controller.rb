@@ -2,26 +2,30 @@
 class MoviesController < ApplicationController
   def index
     # @movies = Movie.all
-    #@movies = Movie.order('title ASC')
-    #@movies = Movie.order(params[:sort]).all
-    #url = "https://api.themoviedb.org/3/movie?api_key=#{ Rails.application.credentials[:tmdb][:access_key_id] }"
+    # @movies = Movie.order('title ASC')
+    # @movies = Movie.order(params[:sort]).all
+    # Get Movies from tmdb sort by trending
     url = "https://api.themoviedb.org/3/trending/all/day?api_key=#{ Rails.application.credentials[:tmdb][:access_key_id] }"
-
     @movies = JSON.parse(Net::HTTP.get(URI(url)))
-    logger.debug @movies
+    #logger.debug @movies
   end
 
   def show
-    #id = params[:id] # retrieve movie ID from URI route
-    #@movie = Movie.find(id)
+    # id = params[:id] # retrieve movie ID from URI route
+    # @movie = Movie.find(id)
     # will render app/views/movies/show.html.haml by default
-    begin
-      id = params[:id]
-      @movie = Movie.find(id) # look up movie by unique ID
-    rescue ActiveRecord::RecordNotFound
+    id = params[:id]
+    #logger.debug "Movie ID : #{id}"
+    url = "https://api.themoviedb.org/3/movie/#{id}?api_key=#{ Rails.application.credentials[:tmdb][:access_key_id] }"
+    movie_info = JSON.parse(Net::HTTP.get(URI(url)))
+    #logger.debug @movie
+
+    if movie_info["adult"] == false
+      @movie = movie_info
+    else
       redirect_to movies_path
-      flash[:notice] = "Sorry, we don't have a movie ID #{id}"
-      #render app/views/movies/movie_notfound.html.erb
+      flash[:notice] = "Sorry, we don't have any information on this movie (ID=#{id}) yet."
+    #render app/views/movies/movie_notfound.html.erb
     end
   end
 

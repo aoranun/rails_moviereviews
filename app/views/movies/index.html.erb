@@ -1,15 +1,17 @@
 <h1>All Movies</h1>
 <table id="movies">
   <thead>
+    <!-- Header of table -->
     <tr>
       <th>No.</th>
       <th>Movie Title</th>
       <th>Vote Average</th>
       <th>Release Date</th>
-      <!--th>More Info</th-->
+      <th>More Info</th>
     </tr>
   </thead>
   <tbody>
+    <!-- Movies list from tmdb -->
     <% @movies["results"].each.with_index(1) do |movie, index| %>
       <tr>
         <td>
@@ -24,12 +26,13 @@
         <td>
           <%= if movie["release_date"]; movie["release_date"].to_datetime.strftime("%d/%m/%Y") else movie["first_air_date"].to_datetime.strftime("%d/%m/%Y") end  %>
         </td>
-        <!--td>
-          <!--%= link_to "More about #{movie["original_title"]}", movie_path(movie) %>
-        </td-->
+        <td>
+          <!-- Link to Movie Info -->
+          <%= link_to "More about #{if movie["title"]; movie["title"] else movie["name"] end}", movie_show_path(movie["id"]) %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 <% #add to end of index.html.haml %>
-<%= link_to 'Add new movie', new_movie_path %>
+<!--%= link_to 'Add new movie', new_movie_path %-->
