@@ -1,38 +1,43 @@
 <h1>All Movies</h1>
 <table id="movies">
   <thead>
-    <!-- Header of table -->
     <tr>
       <th>No.</th>
       <th>Movie Title</th>
-      <th>Vote Average</th>
+      <th>Rating</th>
       <th>Release Date</th>
       <th>More Info</th>
     </tr>
   </thead>
   <tbody>
-    <!-- Movies list from tmdb -->
-    <% @movies["results"].each.with_index(1) do |movie, index| %>
+    <% @movies.each.with_index(1) do |movie, index| %>
       <tr>
         <td>
           <%= index  %>
         </td>
         <td>
-          <%= if movie["title"]; movie["title"] else movie["name"] end %>
+          <%= movie.title  %>
         </td>
         <td>
-          <%= movie["vote_average"] %>
+          <%= movie.rating %>
         </td>
         <td>
-          <%= if movie["release_date"]; movie["release_date"].to_datetime.strftime("%d/%m/%Y") else movie["first_air_date"].to_datetime.strftime("%d/%m/%Y") end  %>
+          <%= movie.release_date.strftime("%d/%m/%Y") %>
         </td>
         <td>
-          <!-- Link to Movie Info -->
-          <%= link_to "More about #{if movie["title"]; movie["title"] else movie["name"] end}", movie_show_path(movie["id"]) %>
+          <%= link_to "More about #{movie.title}", movie_path(movie) %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 <% #add to end of index.html.haml %>
+<%= link_to 'Add new movie', new_movie_path %>
+<% # add to end of app/views/movies/index.html.haml: %>
+<h1>Search TMDb for a movie</h1>
+<%= form_tag :action => 'search_tmdb' do %>
+  <label for="search_terms">Search Terms</label>
+  <%= text_field_tag 'search_terms' %>
+  <%= submit_tag 'Search TMDb' %>
+<% end %>
 <!--%= link_to 'Add new movie', new_movie_path %-->

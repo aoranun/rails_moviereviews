@@ -2,30 +2,21 @@
 class MoviesController < ApplicationController
   def index
     # @movies = Movie.all
-    # @movies = Movie.order('title ASC')
-    # @movies = Movie.order(params[:sort]).all
-    # Get Movies from tmdb sort by trending
-    url = "https://api.themoviedb.org/3/trending/all/day?api_key=#{ Rails.application.credentials[:tmdb][:access_key_id] }"
-    @movies = JSON.parse(Net::HTTP.get(URI(url)))
-    #logger.debug @movies
+    @movies = Movie.order('title ASC')
+    #@movies = Movie.order(params[:sort]).all
   end
 
   def show
-    # id = params[:id] # retrieve movie ID from URI route
-    # @movie = Movie.find(id)
+    #id = params[:id] # retrieve movie ID from URI route
+    #@movie = Movie.find(id)
     # will render app/views/movies/show.html.haml by default
-    id = params[:id]
-    #logger.debug "Movie ID : #{id}"
-    url = "https://api.themoviedb.org/3/movie/#{id}?api_key=#{ Rails.application.credentials[:tmdb][:access_key_id] }"
-    movie_info = JSON.parse(Net::HTTP.get(URI(url)))
-    #logger.debug @movie
-
-    if movie_info["adult"] == false
-      @movie = movie_info
-    else
+    begin
+      id = params[:id]
+      @movie = Movie.find(id) # look up movie by unique ID
+    rescue ActiveRecord::RecordNotFound
       redirect_to movies_path
-      flash[:notice] = "Sorry, we don't have any information on this movie (ID=#{id}) yet."
-    #render app/views/movies/movie_notfound.html.erb
+      flash[:notice] = "Sorry, we don't have a movie ID #{id}"
+      #render app/views/movies/movie_notfound.html.erb
     end
   end
 
@@ -67,6 +58,27 @@ class MoviesController < ApplicationController
     # ...
     flash[:notice] = "#{@movie.title} was successfully created."
     redirect_to @movie
+  end
+
+  def search_tmdb
+    # Feature: User can add movie by searching for it in The Movie Database (TMDb)
+
+    # As a movie fan
+    # So that I can add new movies without manual tedium
+    # I want to add movies by looking up their details in TMDb
+
+    # Scenario: Try to add nonexistent movie (sad path)
+
+    # Given I am on the RottenPotatoes home page
+    # Then I should see "Search TMDb for a movie"
+    # When I fill in "Search Terms" with "Movie That Does Not Exist"
+    # And I press "Search TMDb"
+    # Then I should be on the RottenPotatoes home page
+    # And I should see "'Movie That Does Not Exist' was not found in TMDb."
+
+    # hardwire to simulate failure
+    flash[:warning] = "'#{params[:search_terms]}' was not found in TMDb."
+    redirect_to movies_path
   end
 
   private

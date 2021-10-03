@@ -1,18 +1,20 @@
 <% # in app/views/movies/show.html.haml %>
-<h2>Details about <%= if @movie["title"]; @movie["title"] else @movie["name"] end %></h2>
+<h2>Details about <%= @movie.title %></h2>
 <ul id="details">
   <li>
-    Vote Average:
-    <%= @movie["vote_average"] %>
+    Rating:
+    <%= @movie.rating %>
   </li>
   <li>
     Released on:
-    <%= if @movie["release_date"]; @movie["release_date"].to_datetime.strftime("%d/%m/%Y") else @movie["first_air_date"].to_datetime.strftime("%d/%m/%Y") end %>
+    <%= @movie.release_date.strftime("%B %d, %Y") %>
   </li>
 </ul>
 <h3>Description:</h3>
 <p id="description">
-  <%= @movie["overview"] %>
+  <%= @movie.description %>
 </p>
-
+<%= link_to 'Edit info', edit_movie_path(@movie) %>
+<% # This Delete link will not really be a link, but a form: %>
+<%= link_to 'Delete', movie_path(@movie), :method => :delete %>
 <%= link_to 'Back to movie list', movies_path %>
