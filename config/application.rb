@@ -10,6 +10,9 @@ module Myrottenpotatoes
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
+    config.logger = Logger.new(STDOUT)
+    # config.logger = Log4r::Logger.new("Application Log")
+    config.log_level = :debug  # In any environment initializer, or
 
     # Configuration for the application, engines, and railties goes here.
     #

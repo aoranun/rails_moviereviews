@@ -2,8 +2,13 @@
 class MoviesController < ApplicationController
   def index
     # @movies = Movie.all
-    @movies = Movie.order('title ASC')
+    #@movies = Movie.order('title ASC')
     #@movies = Movie.order(params[:sort]).all
+    #url = "https://api.themoviedb.org/3/movie?api_key=#{ Rails.application.credentials[:tmdb][:access_key_id] }"
+    url = "https://api.themoviedb.org/3/trending/all/day?api_key=#{ Rails.application.credentials[:tmdb][:access_key_id] }"
+
+    @movies = JSON.parse(Net::HTTP.get(URI(url)))
+    logger.debug @movies
   end
 
   def show
@@ -64,6 +69,12 @@ class MoviesController < ApplicationController
 
   def movie_params
     params.require(:movie).permit(:title, :rating, :description, :release_date)
+  end
+
+  private
+  def search_api(query, page=1)
+    url = "https://api.themoviedb.org/3/search/movie?api_key=#{ Rails.application.secrets.tmdb_api_key }&query=#{ query }&page=#{ page }"
+    data = JSON.parse(Net::HTTP.get(URI(url)))
   end
 
 end

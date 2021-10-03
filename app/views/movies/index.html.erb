@@ -4,29 +4,29 @@
     <tr>
       <th>No.</th>
       <th>Movie Title</th>
-      <th>Rating</th>
+      <th>Vote Average</th>
       <th>Release Date</th>
-      <th>More Info</th>
+      <!--th>More Info</th-->
     </tr>
   </thead>
   <tbody>
-    <% @movies.each.with_index(1) do |movie, index| %>
+    <% @movies["results"].each.with_index(1) do |movie, index| %>
       <tr>
         <td>
           <%= index  %>
         </td>
         <td>
-          <%= movie.title  %>
+          <%= if movie["title"]; movie["title"] else movie["name"] end %>
         </td>
         <td>
-          <%= movie.rating %>
+          <%= movie["vote_average"] %>
         </td>
         <td>
-          <%= movie.release_date.strftime("%d/%m/%Y") %>
+          <%= if movie["release_date"]; movie["release_date"].to_datetime.strftime("%d/%m/%Y") else movie["first_air_date"].to_datetime.strftime("%d/%m/%Y") end  %>
         </td>
-        <td>
-          <%= link_to "More about #{movie.title}", movie_path(movie) %>
-        </td>
+        <!--td>
+          <!--%= link_to "More about #{movie["original_title"]}", movie_path(movie) %>
+        </td-->
       </tr>
     <% end %>
   </tbody>
